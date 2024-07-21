@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -20,4 +21,9 @@ class Checkout extends Model
         'total_amount',
         'status',
     ];
+
+    public function cartItems()
+    {
+        return $this->hasMany(Cart::class, 'id', 'id');
+    }
 }

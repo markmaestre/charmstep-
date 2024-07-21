@@ -11,12 +11,12 @@ class CreateCheckoutsTable extends Migration
         Schema::create('checkouts', function (Blueprint $table) {
             $table->id('checkout_id');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('cart_id')->constrained()->onDelete('cascade'); // Reference to the cart
+            $table->foreignId('cart_id')->constrained()->onDelete('cascade'); 
             $table->string('address');
             $table->string('phone_number');
             $table->string('payment_method');
-            $table->decimal('total_amount', 8, 2); // Total amount for the checkout
-            $table->string('status')->default('processing'); // Status of the checkout
+            $table->decimal('total_amount', 8, 2); 
+            $table->string('status')->default('processing'); 
             $table->timestamps();
         });
     }

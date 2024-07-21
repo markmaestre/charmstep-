@@ -9,6 +9,8 @@ use App\Http\Controllers\Admin\AdminDashboardController;
 use App\Http\Controllers\Auth\WishlistController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\AdminCheckoutController;
+use App\Http\Controllers\CheckoutController;
 
 
 /*
@@ -59,6 +61,10 @@ Route::middleware(['auth'])->group(function () {
     Route::view('/checkout/success', 'cart.checkout_success')->name('checkout.success');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::get('/checkout/history', [CheckoutController::class, 'history'])->name('checkout.history');
+    Route::get('/checkout/{checkout_id}', [CheckoutController::class, 'details'])->name('checkout.details'); 
+});
 
 //admin
 
@@ -74,4 +80,10 @@ Route::prefix('admin')->group(function () {
     });
 });
 
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/admin/checkouts', [AdminCheckoutController::class, 'index'])->name('admin.checkouts');
+    Route::get('/admin/checkout/{id}', [AdminCheckoutController::class, 'show'])->name('admin.checkout.show');
+    Route::put('/admin/checkout/{id}', [AdminCheckoutController::class, 'updateStatus'])->name('admin.updateCheckoutStatus');
+});
     Route::view('/admin/customer', 'customer.index');

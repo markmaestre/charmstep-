@@ -12,7 +12,7 @@ class CartController extends Controller
     public function view()
     {
         $userId = auth()->user()->id;
-        $cartItems = Cart::where('user_id', $userId)->get();
+        $cartItems = Cart::where('user_id', $userId)->where('status', 'pending')->get();
 
         $grandTotal = $cartItems->sum(function($item) {
             return $item->price * $item->quantity;
@@ -37,6 +37,7 @@ class CartController extends Controller
 
         $cartItem = Cart::where('user_id', $validatedData['user_id'])
                          ->where('item_id', $validatedData['item_id'])
+                         ->where('status', 'pending')
                          ->first();
         
         if ($cartItem) {
@@ -83,14 +84,13 @@ class CartController extends Controller
             return redirect()->route('cart.view')->with('error', 'User not authenticated.');
         }
 
-        Cart::where('user_id', $userId)->delete();
+        Cart::where('user_id', $userId)->where('status', 'pending')->delete();
 
         return redirect()->route('cart.view')->with('success', 'All items removed from cart.');
     }
 
     public function showCheckout()
     {
-        // Display the checkout form
         return view('cart.checkout');
     }
 
@@ -103,7 +103,7 @@ class CartController extends Controller
         ]);
 
         $userId = auth()->user()->id;
-        $cartItems = Cart::where('user_id', $userId)->get();
+        $cartItems = Cart::where('user_id', $userId)->where('status', 'pending')->get();
 
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.view')->with('error', 'Cart is empty.');
@@ -113,12 +113,9 @@ class CartController extends Controller
             return $item->price * $item->quantity;
         });
 
-        // Create a checkout record
-        $cartId = $cartItems->pluck('id')->first(); // Use the cart_id of the first item
-
         $checkout = Checkout::create([
             'user_id' => $userId,
-            'cart_id' => $cartId,
+            'cart_id' => $cartItems->first()->id, // Use the cart_id of the first item
             'address' => $validatedData['address'],
             'phone_number' => $validatedData['phone_number'],
             'payment_method' => $validatedData['payment_method'],
@@ -127,8 +124,7 @@ class CartController extends Controller
         ]);
 
         if ($checkout) {
-            // Update the status of each cart item to 'processing'
-            Cart::where('user_id', $userId)->update(['status' => 'processing']);
+            Cart::where('user_id', $userId)->where('status', 'pending')->update(['status' => 'processing']);
 
             return redirect()->route('checkout.success')->with('success', 'Checkout successful.');
         } else {

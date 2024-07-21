@@ -19,4 +19,8 @@ class Cart extends Model
         'image',
         'status'
     ];
+    public function item()
+    {
+        return $this->belongsTo(Item::class, 'item_id', 'item_id');
+    }
 }
