@@ -140,6 +140,7 @@
             border-bottom: 1px solid #dee2e6;
         }
     </style>
+    
 </head>
 <body>
 
@@ -166,30 +167,14 @@
                         <span>Product</span>
                     </a>
                 </li>
+            
                 <li class="nav-link">
-                    <a href="checkout">
-                        <i class='bx bx-history icon'></i>
-                        <span>Order Cart</span>
-                    </a>
-                </li>
-                <li class="nav-link">
-                    <a href="/checkout/history">
+                    <a href="/seller/checkouts">
                         <i class='bx bx-history icon'></i>
                         <span>Order History</span>
                     </a>
                 </li>
-                <li class="nav-link">
-                    <a href="/reviews/create">
-                        <i class='bx bx-star icon'></i>
-                        <span>Reviews & Ratings</span>
-                    </a>
-                </li>
-                <li class="nav-link">
-                    <a href="wishlist">
-                        <i class='bx bx-heart icon'></i>
-                        <span>Wishlist</span>
-                    </a>
-                </li>
+      
             </ul>
         </div>
         <div class="bottom-content">

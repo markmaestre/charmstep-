@@ -12,6 +12,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\SellerController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,10 +31,10 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 Route::apiResource('customers', CustomerController::class);
-
-
 Route::apiResource('items', ItemController::class);
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
+Route::post('/check-email', [RegisterController::class, 'checkEmail']);
+
 
 
 
@@ -47,7 +48,19 @@ Route::group(['middleware' => 'web'], function () {
 
 
 
+
 Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('wishlists', WishlistController::class);
     Route::post('/cart/add', [CartController::class, 'addToCart']);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::post('/checkout', [CheckoutController::class, 'store']);
+   // Route::apiResource('reviews', ReviewController::class);
+});
+
+Route::middleware('auth:sanctum')->group(function () {
+    Route::apiResource('reviews', ReviewController::class);
+    Route::get('/checkouts/completed', [CheckoutController::class, 'completed']);
+
 });

@@ -36,11 +36,21 @@
 
         input[type="text"],
         input[type="email"],
-        input[type="password"] {
+        input[type="password"],
+        select {
             width: calc(100% - 20px);
             padding: 8px;
             border: 1px solid #ccc;
             border-radius: 3px;
+        }
+
+        .is-invalid {
+            border-color: #dc3545;
+        }
+
+        .error {
+            color: #dc3545;
+            font-size: 0.875em;
         }
 
         button {
@@ -70,11 +80,13 @@
         }
     </style>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 </head>
 <body>
     <div class="container">
         <h2>User Registration</h2>
         <form id="register-form" class="registration-form">
+            @csrf
             <div class="form-group">
                 <label for="name">Name:</label><br>
                 <input type="text" id="name" name="name" required>
@@ -96,21 +108,19 @@
             </div>
             
             <div class="form-group">
-                <label for="status">Status:</label><br>
-                <input type="text" id="status" name="status" value="active" required>
-            </div>
-            
-            <div class="form-group">
                 <label for="role">Role:</label><br>
-                <input type="text" id="role" name="role" value="user" required>
+                <select id="role" name="role" required>
+                    <option value="user">User</option>
+                    <option value="seller">Seller</option>
+                </select>
             </div>
+
+            <input type="hidden" id="status" name="status" value="active">
             
             <button type="submit">Register</button>
         </form>
     </div>
 
-    
-             <script src="{{ asset('js/auth.js') }}"></script>
-   
+    <script src="{{ asset('js/auth.js') }}"></script>
 </body>
 </html>

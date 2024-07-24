@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Imports\WishlistsImport;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Http\Request;
 use App\Models\Wishlist;
 use Illuminate\Support\Facades\Log;
@@ -83,4 +85,19 @@ class WishlistController extends Controller
             "status" => 200
         ]);
     }
+    public function importExcel(Request $request)
+    {
+        $request->validate([
+            'file' => 'required|mimes:xlsx,csv'
+        ]);
+
+        try {
+            Excel::import(new WishlistsImport, $request->file('file'));
+            return response()->json(['success' => 'Excel file imported successfully.', 'status' => 200]);
+        } catch (\Exception $e) {
+            Log::error('Error importing Excel file: '.$e->getMessage());
+            return response()->json(['error' => 'Error importing Excel file.'], 500);
+        }
+    }
+
 }

@@ -30,7 +30,7 @@
             border-radius: 12px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            width: calc(25% - 20px); /* Responsive: Adjusts based on container width */
+            width: calc(25% - 20px); 
             margin-bottom: 20px;
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
@@ -40,8 +40,8 @@
         }
         .item-box img {
             width: 100%;
-            height: 200px; /* Fixed height for consistency */
-            object-fit: cover; /* Ensure images cover the box while maintaining aspect ratio */
+            height: 200px; 
+            object-fit: cover;
         }
         .item-box .details {
             padding: 15px;
@@ -108,7 +108,7 @@
     <div class="container">
         <h1 style="text-align: center; margin-bottom: 30px;">Shop Items</h1>
         <div class="item-container">
-            <!-- Loop through items and display them -->
+          
             @foreach ($items as $item)
             <div class="item-box">
                 <img src="/storage/{{ $item->image }}" alt="{{ $item->product_name }}">
@@ -131,37 +131,9 @@
         </div>
     </div>
 
-    <!-- Include the user ID in a hidden input -->
+
     <input type="hidden" id="userId" value="{{ auth()->user()->id }}">
-
-    <!-- Include JavaScript for handling add to cart -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $('.addToCartBtn').click(function() {
-                var itemId = $(this).data('id');
-                var userId = $('#userId').val();
-                var quantity = $(this).siblings('.quantityInput').val();
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/api/cart/add',
-                    data: {
-                        item_id: itemId,
-                        user_id: userId,
-                        quantity: quantity,
-                        _token: $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        alert(response.success);
-                    },
-                    error: function(xhr) {
-                        console.error(xhr.responseText);
-                        alert('Error adding item to cart: ' + xhr.responseText);
-                    }
-                });
-            });
-        });
-    </script>
+    <script src="{{ asset('js/shop.js') }}"></script>
 </body>
 </html>

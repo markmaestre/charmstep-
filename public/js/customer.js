@@ -1,34 +1,42 @@
-$(document).ready(function () {
- 
-    function fetchUsers() {
-        $.ajax({
-            type: "GET",
-            url: "/api/customers",
-            dataType: 'json',
-            success: function (data) {
-                $("#tbody").empty(); 
-                $.each(data, function (key, value) {
-                    var tr = $("<tr>");
-                    tr.append($("<td>").html(value.id));
-                    tr.append($("<td>").html(value.name));
-                    tr.append($("<td>").html(value.email));
-                    tr.append($("<td>").html(value.status));
-                    tr.append($("<td>").html(value.role));
-                    tr.append("<td align='center'><a href='#' data-toggle='modal' data-target='#userModal' class='editbtn' data-id='" + value.id + "'><i class='fas fa-edit' aria-hidden='true' style='font-size:24px; color:blue'></i></a></td>");
-                    tr.append("<td><a href='#' class='deletebtn' data-id='" + value.id + "'><i class='fa fa-trash' style='font-size:24px; color:red'></i></a></td>");
-                    $("#tbody").append(tr);
-                });
-            },
-            error: function () {
-                console.log('Error fetching users via AJAX.');
-            }
-        });
+// Set up CSRF token for AJAX requests
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
     }
+});
 
+$(document).ready(function () {
+    var table = $('#table').DataTable({
+        processing: true,
+        serverSide: true,
+        ajax: {
+            url: "/api/customers",
+            type: "GET",
+            dataSrc: ''
+        },
+        columns: [
+            { data: 'id', name: 'id' },
+            { data: 'name', name: 'name' },
+            { data: 'email', name: 'email' },
+            { data: 'status', name: 'status' },
+            { data: 'role', name: 'role' },
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return "<a href='#' data-toggle='modal' data-target='#userModal' class='editbtn' data-id='" + data.id + "'><i class='fas fa-edit' aria-hidden='true' style='font-size:24px; color:blue'></i></a>";
+                }
+            },
+            {
+                data: null,
+                render: function (data, type, row) {
+                    return "<a href='#' class='deletebtn' data-id='" + data.id + "'><i class='fa fa-trash' style='font-size:24px; color:red'></i></a>";
+                }
+            }
+        ]
+    });
 
-    fetchUsers();
-
-    $("#userSubmit").on('click', function (e) {
+    // Add user via AJAX
+    $('#userSubmit').on('click', function (e) {
         e.preventDefault();
         var data = $('#form').serialize();
         $.ajax({
@@ -36,9 +44,9 @@ $(document).ready(function () {
             url: "/api/customers",
             data: data,
             dataType: "json",
-            success: function (data) {
+            success: function (response) {
                 $("#userModal").modal("hide");
-                fetchUsers(); 
+                table.ajax.reload(); // Reload DataTable after successful operation
             },
             error: function (error) {
                 console.log('Error creating user via AJAX.');
@@ -47,7 +55,8 @@ $(document).ready(function () {
         });
     });
 
-    $("#userUpdate").on('click', function (e) {
+    // Update user via AJAX
+    $('#userUpdate').on('click', function (e) {
         e.preventDefault();
         var id = $('#userId').val();
         var data = $('#form').serialize();
@@ -56,9 +65,9 @@ $(document).ready(function () {
             url: `/api/customers/${id}`,
             data: data,
             dataType: "json",
-            success: function (data) {
+            success: function (response) {
                 $("#userModal").modal("hide");
-                fetchUsers(); 
+                table.ajax.reload(); // Reload DataTable after successful operation
             },
             error: function (error) {
                 console.log('Error updating user via AJAX.');
@@ -67,15 +76,15 @@ $(document).ready(function () {
         });
     });
 
-
-    $("#tbody").on('click', '.deletebtn', function (e) {
+    // Delete user via AJAX
+    $('#tbody').on('click', '.deletebtn', function (e) {
         e.preventDefault();
         var id = $(this).data('id');
         $.ajax({
             type: "DELETE",
             url: `/api/customers/${id}`,
-            success: function (data) {
-                fetchUsers(); 
+            success: function (response) {
+                table.ajax.reload(); // Reload DataTable after successful operation
             },
             error: function (error) {
                 console.log('Error deleting user via AJAX.');
@@ -84,7 +93,7 @@ $(document).ready(function () {
         });
     });
 
-
+    // Load user details into modal for editing
     $('#userModal').on('show.bs.modal', function (e) {
         var id = $(e.relatedTarget).data('id');
         $.ajax({
@@ -104,7 +113,7 @@ $(document).ready(function () {
         });
     });
 
-  
+   
     $('#userModal').on('hidden.bs.modal', function (e) {
         $("#form").trigger("reset");
         $("#userId").val('');

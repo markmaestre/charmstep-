@@ -1,6 +1,11 @@
 @extends('layouts.master')
 
 @section('content')
+
+<head>
+    
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
 <div id="items" class="container">
     <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#userModal">Add User <span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button>
     <div class="card-body" style="height: 210px;">
@@ -20,6 +25,7 @@
                 </tr>
             </thead>
             <tbody id="tbody">
+                <!-- DataTable rows are dynamically added here -->
             </tbody>
         </table>
     </div>
@@ -28,13 +34,18 @@
 <!-- User Modal -->
 <div id="userModal" class="modal fade" role="dialog">
     <div class="modal-dialog modal-lg">
+        <!-- Modal content-->
         <div class="modal-content">
             <div class="modal-header">
+                <h4 class="modal-title">User Details</h4>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title"></h4>
             </div>
-            <div class="modal-body">
-                <form id="form">
+            <form id="form">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="userId">User ID:</label>
+                        <input type="text" class="form-control" id="userId" name="userId" readonly>
+                    </div>
                     <div class="form-group">
                         <label for="name">Name:</label>
                         <input type="text" class="form-control" id="name" name="name" required>
@@ -51,7 +62,7 @@
                         <label for="status">Status:</label>
                         <select class="form-control" id="status" name="status">
                             <option value="active">Active</option>
-                            <option value="deactive">Deactive</option>
+                            <option value="inactive">Inactive</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -61,18 +72,15 @@
                             <option value="seller">Seller</option>
                         </select>
                     </div>
-                    <input type="hidden" id="userId" name="userId">
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-success" id="userSubmit">Save</button>
-                <button type="button" class="btn btn-primary" id="userUpdate">Update</button>
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary" id="userSubmit">Submit</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
-
 @endsection
 
 @section('scripts')

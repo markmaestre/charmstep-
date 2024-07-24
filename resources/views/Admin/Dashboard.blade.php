@@ -66,14 +66,9 @@
                     <span class="title">Product</span>
                 </a>
             </li>
+      
             <li>
-                <a href="/admin/brands">
-                    <i class="bx bx-barcode"></i>
-                    <span class="title">Brand Shoes</span>
-                </a>
-            </li>
-            <li>
-                <a href="/admin/confirmations/completed">
+                <a href="/admin/checkouts">
                     <i class="bx bx-cart"></i>
                     <span class="title">Cart History</span>
                 </a>
@@ -84,12 +79,7 @@
                     <span class="title">Sales</span>
                 </a>
             </li>
-            <li>
-                <a href="/admin/confirmations">
-                    <i class="bx bx-credit-card"></i>
-                    <span class="title">Payment</span>
-                </a>
-            </li>
+          
             <li>
                 <a href="/admin/reviews">
                     <i class="bx bx-star"></i>
@@ -126,14 +116,14 @@
         </div>
     </section>
     <section class="home">
-        <!-- Your home section content -->
+
     </section>
 
-    <!-- Include jQuery library -->
+    
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
     <script>
-        // Your existing script for toggling theme
+     
         const btn_theme = document.querySelector(".theme-btn");
         const theme_ball = document.querySelector(".theme-ball");
 
@@ -161,7 +151,7 @@
             }
         });
 
-        // Confirm logout using jQuery
+      
         $(document).ready(function() {
             $('.logout-link').click(function(e) {
                 e.preventDefault();

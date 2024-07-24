@@ -11,6 +11,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\AdminCheckoutController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ReviewController;
 
 
 /*
@@ -27,32 +28,34 @@ use App\Http\Controllers\CheckoutController;
 Route::get('/register', function () {
     return view('register');
 });
-
 Route::view('/login', 'auth.login');
-
 Route::get('/home', function () {
     return view('home');
 });
 
 
-Route::get('/shop', [ShopController::class, 'index']);
 //customer
 Route::middleware('auth')->group(function () {
     Route::view('/seller/product', 'seller.product');
     Route::get('/seller/dashboard', [SellerController::class, 'dashboard'])->name('seller.dashboard');
+    Route::get('/seller/checkouts', [AdminCheckoutController::class, 'index'])->name('seller.checkouts');
     
+    Route::get('/shop', [ShopController::class, 'index']);
     Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
 });
 
 Route::middleware(['auth'])->group(function () {
-    Route::view('/user/wishlist', 'user.wishlist');
+    Route::view('/user/wishlist', 'user.wishlist')->name('wishlist.index');
     Route::get('/shop', [ShopController::class, 'index'])->name('shop.index');
-
 
     Route::delete('/cart/delete/{id}', [CartController::class, 'delete'])->name('cart.delete');
     Route::delete('/cart/delete-all', [CartController::class, 'deleteAll'])->name('cart.deleteAll');
 });
 
+Route::middleware(['auth'])->group(function () {
+    Route::view('/reviews', 'reviews.index');
+    
+});
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
@@ -65,6 +68,11 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/checkout/history', [CheckoutController::class, 'history'])->name('checkout.history');
     Route::get('/checkout/{checkout_id}', [CheckoutController::class, 'details'])->name('checkout.details'); 
 });
+
+Route::post('wishlists/importExcel', [WishlistController::class, 'importExcel'])->name('wishlists.importExcel');
+
+
+
 
 //admin
 

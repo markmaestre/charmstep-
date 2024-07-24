@@ -1,7 +1,7 @@
 
 
 $(document).ready(function () {
-    // Initialize DataTable
+  
     var table = $('#itemTable').DataTable({
         processing: true,
         serverSide: true,
@@ -41,14 +41,14 @@ $(document).ready(function () {
         ]
     });
 
-    // Show item data in modal for editing
+
     $('#itemModal').on('show.bs.modal', function (e) {
         $('#form').trigger('reset');
-        $('#itemId').val(''); // Reset item ID
+        $('#itemId').val(''); 
 
         var id = $(e.relatedTarget).data('id');
         if (id) {
-            $('#itemId').val(id); // Set item ID in hidden input
+            $('#itemId').val(id); 
 
             $.ajax({
                 type: 'GET',
@@ -61,11 +61,11 @@ $(document).ready(function () {
                     $('#size').val(data.size);
                     $('#price').val(data.price);
 
-                    // Display image preview
+                  
                     if (data.image) {
                         $('#imagePreview').attr('src', '/storage/' + data.image);
                     } else {
-                        $('#imagePreview').attr('src', '/storage/images/no-image.jpg'); // Default image path or placeholder
+                        $('#imagePreview').attr('src', '/storage/images/no-image.jpg');
                     }
                 },
                 error: function () {
@@ -74,12 +74,12 @@ $(document).ready(function () {
                 }
             });
         } else {
-            // For adding new item
-            $('#imagePreview').attr('src', '/storage/images/no-image.jpg'); // Default image path or placeholder
+          
+            $('#imagePreview').attr('src', '/storage/images/no-image.jpg');
         }
     });
 
-    // Store or update item
+   
     $('#form').submit(function (e) {
         e.preventDefault();
         var formData = new FormData(this);
@@ -97,7 +97,7 @@ $(document).ready(function () {
             success: function (data) {
                 alert(data.success);
                 $('#itemModal').modal('hide');
-                table.ajax.reload(); // Reload DataTable after save/update
+                table.ajax.reload(); 
             },
             error: function (xhr) {
                 console.log('Error saving item. Please check the console for more details.');
@@ -107,7 +107,6 @@ $(document).ready(function () {
         });
     });
 
-    // Delete item
     $(document).on('click', '.deletebtn', function (e) {
         e.preventDefault();
         var id = $(this).data('id');
@@ -118,7 +117,7 @@ $(document).ready(function () {
                 headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
                 success: function (data) {
                     alert('Item deleted successfully.');
-                    table.ajax.reload(); // Reload DataTable after delete
+                    table.ajax.reload();
                 },
                 error: function (xhr) {
                     console.log('Error deleting item. Please check the console for more details.');

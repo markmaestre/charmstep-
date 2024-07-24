@@ -167,7 +167,7 @@
                 </a>
             </li>
             <li>
-                <a href="/reviews/create">
+                <a href="/reviews">
                     <i class='bx bx-star icon'></i>
                     <span>Reviews & Ratings</span>
                 </a>
