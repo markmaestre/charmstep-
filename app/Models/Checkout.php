@@ -26,4 +26,10 @@ class Checkout extends Model
     {
         return $this->hasMany(Cart::class, 'id', 'id');
     }
+
+    public function reviews()
+{
+    return $this->hasMany(Review::class, 'checkout_id');
+}
+
 }

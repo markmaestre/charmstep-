@@ -30,7 +30,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 
-Route::apiResource('customers', CustomerController::class);
+//Route::apiResource('customers', CustomerController::class);
 Route::apiResource('items', ItemController::class);
 Route::post('/register', [RegisterController::class, 'register'])->name('register');
 Route::post('/check-email', [RegisterController::class, 'checkEmail']);
@@ -44,7 +44,7 @@ Route::group(['middleware' => 'web'], function () {
     
 });
 
-
+//Route::apiResource('customers', CustomerController::class);
 
 
 
@@ -60,7 +60,7 @@ Route::middleware('auth:sanctum')->group(function () {
 });
 
 Route::middleware('auth:sanctum')->group(function () {
-    Route::apiResource('reviews', ReviewController::class);
+    //Route::apiResource('reviews', ReviewController::class);
     Route::get('/checkouts/completed', [CheckoutController::class, 'completed']);
 
 });

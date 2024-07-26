@@ -2,104 +2,81 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Http\Request;
+use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class CustomerController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::select(['id', 'name', 'email', 'status', 'role'])->get();
-        return response()->json($users);
+        if ($request->ajax()) {
+            $users = User::select(['id', 'name', 'email', 'status', 'role']);
+            return DataTables::of($users)
+                ->addColumn('action', function ($user) {
+                    return "
+                        <button class='btn btn-info editbtn' data-id='{$user->id}' data-toggle='modal' data-target='#userModal'>Edit</button>
+                        <button class='btn btn-danger deletebtn' data-id='{$user->id}'>Delete</button>
+                    ";
+                })
+                ->rawColumns(['action'])
+                ->make(true);
+        }
+        return view('customer.index');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $this->validateRequest($request);
-
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'status' => $request->status ?? 'active',
-            'role' => $request->role ?? 'user',
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email',
+            'status' => 'required|string',
+            'role' => 'required|string',
+            'password' => 'required|string|min:8|confirmed',
         ]);
 
-        return response()->json([
-            "success" => "User created successfully.",
-            "user" => $user,
-            "status" => 200
-        ]);
+        $validated['password'] = Hash::make($validated['password']);
+
+        User::create($validated);
+
+        return response()->json(['success' => 'User created successfully.']);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::find($id);
         return response()->json($user);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, $id)
     {
-        $this->validateRequest($request, $id);
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users,email,' . $id,
+            'status' => 'required|string',
+            'role' => 'required|string',
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
 
-        $user = User::findOrFail($id);
-        $user->name = $request->name;
-        $user->email = $request->email;
+        $user = User::find($id);
 
-        if ($request->filled('password')) {
-            $user->password = Hash::make($request->password);
+        if ($request->has('password') && !empty($request->input('password'))) {
+            $validated['password'] = Hash::make($validated['password']);
+        } else {
+            unset($validated['password']); // Remove password if not provided
         }
 
-        $user->status = $request->status ?? 'active';
-        $user->role = $request->role ?? 'user';
-        $user->save();
+        $user->update($validated);
 
-        return response()->json([
-            "success" => "User updated successfully.",
-            "user" => $user,
-            "status" => 200
-        ]);
+        return response()->json(['success' => 'User updated successfully.']);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::find($id);
         $user->delete();
 
-        return response()->json([
-            "success" => "User deleted successfully.",
-            "status" => 200
-        ]);
-    }
-
-    /**
-     * Validate user request data.
-     */
-    private function validateRequest(Request $request, $id = null)
-    {
-        $request->validate([
-            'name' => 'required|string',
-            'email' => 'required|email|unique:users,email,' . $id,
-            'password' => 'nullable|string|min:8',
-            'status' => 'nullable|in:active,inactive',
-            'role' => 'nullable|in:user,seller',
-        ]);
+        return response()->json(['success' => 'User deleted successfully.']);
     }
 }

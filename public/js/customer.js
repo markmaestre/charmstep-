@@ -1,18 +1,16 @@
-// Set up CSRF token for AJAX requests
-$.ajaxSetup({
-    headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-    }
-});
-
+   
 $(document).ready(function () {
+  
     var table = $('#table').DataTable({
         processing: true,
         serverSide: true,
         ajax: {
-            url: "/api/customers",
-            type: "GET",
-            dataSrc: ''
+            url: "/customers",
+            type: 'GET',
+            dataType: 'json',
+            error: function (xhr, error, thrown) {
+                console.error('AJAX Error:', error, thrown);
+            }
         },
         columns: [
             { data: 'id', name: 'id' },
@@ -20,85 +18,97 @@ $(document).ready(function () {
             { data: 'email', name: 'email' },
             { data: 'status', name: 'status' },
             { data: 'role', name: 'role' },
-            {
-                data: null,
-                render: function (data, type, row) {
-                    return "<a href='#' data-toggle='modal' data-target='#userModal' class='editbtn' data-id='" + data.id + "'><i class='fas fa-edit' aria-hidden='true' style='font-size:24px; color:blue'></i></a>";
-                }
-            },
-            {
-                data: null,
-                render: function (data, type, row) {
-                    return "<a href='#' class='deletebtn' data-id='" + data.id + "'><i class='fa fa-trash' style='font-size:24px; color:red'></i></a>";
-                }
-            }
+            { data: 'action', name: 'action', orderable: false, searchable: false },
         ]
     });
 
-    // Add user via AJAX
-    $('#userSubmit').on('click', function (e) {
-        e.preventDefault();
-        var data = $('#form').serialize();
-        $.ajax({
-            type: "POST",
-            url: "/api/customers",
-            data: data,
-            dataType: "json",
-            success: function (response) {
-                $("#userModal").modal("hide");
-                table.ajax.reload(); // Reload DataTable after successful operation
-            },
-            error: function (error) {
-                console.log('Error creating user via AJAX.');
-                console.log(error);
-            }
-        });
+   
+    function validateForm() {
+        var isValid = true;
+       
+        $('.form-control, .form-select').removeClass('is-invalid');
+        $('.invalid-feedback').text('');
+
+        
+        if ($('#name').val().trim() === '') {
+            $('#name').addClass('is-invalid');
+            $('#nameError').text('Name is required.');
+            isValid = false;
+        }
+
+      
+        var email = $('#email').val().trim();
+        var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (email === '' || !emailPattern.test(email)) {
+            $('#email').addClass('is-invalid');
+            $('#emailError').text('Valid email is required.');
+            isValid = false;
+        }
+
+      
+        if ($('#status').val() === '') {
+            $('#status').addClass('is-invalid');
+            $('#statusError').text('Status is required.');
+            isValid = false;
+        }
+
+      
+        if ($('#role').val() === '') {
+            $('#role').addClass('is-invalid');
+            $('#roleError').text('Role is required.');
+            isValid = false;
+        }
+
+       
+        if (!$('#userId').val() && $('#password').val().trim() === '') {
+            $('#password').addClass('is-invalid');
+            $('#passwordError').text('Password is required.');
+            isValid = false;
+        }
+
+      
+        if ($('#password').val().trim() !== $('#password_confirmation').val().trim()) {
+            $('#password_confirmation').addClass('is-invalid');
+            $('#passwordConfirmationError').text('Passwords do not match.');
+            isValid = false;
+        }
+
+        return isValid;
+    }
+
+ 
+    $('#saveBtn').on('click', function () {
+        if (validateForm()) {
+            var id = $('#userId').val();
+            var method = id ? 'PUT' : 'POST';
+            var url = id ? `/customers/${id}` : '/customers';
+            var data = $('#userForm').serialize();
+
+            $.ajax({
+                type: method,
+                url: url,
+                data: data,
+                dataType: 'json',
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function (response) {
+                    $("#userModal").modal("hide");
+                    table.ajax.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('AJAX Error:', error);
+                }
+            });
+        }
     });
 
-    // Update user via AJAX
-    $('#userUpdate').on('click', function (e) {
-        e.preventDefault();
-        var id = $('#userId').val();
-        var data = $('#form').serialize();
-        $.ajax({
-            type: "PUT",
-            url: `/api/customers/${id}`,
-            data: data,
-            dataType: "json",
-            success: function (response) {
-                $("#userModal").modal("hide");
-                table.ajax.reload(); // Reload DataTable after successful operation
-            },
-            error: function (error) {
-                console.log('Error updating user via AJAX.');
-                console.log(error);
-            }
-        });
-    });
 
-    // Delete user via AJAX
-    $('#tbody').on('click', '.deletebtn', function (e) {
-        e.preventDefault();
+    $('#table').on('click', '.editbtn', function () {
         var id = $(this).data('id');
         $.ajax({
-            type: "DELETE",
-            url: `/api/customers/${id}`,
-            success: function (response) {
-                table.ajax.reload(); // Reload DataTable after successful operation
-            },
-            error: function (error) {
-                console.log('Error deleting user via AJAX.');
-                console.log(error);
-            }
-        });
-    });
-
-    // Load user details into modal for editing
-    $('#userModal').on('show.bs.modal', function (e) {
-        var id = $(e.relatedTarget).data('id');
-        $.ajax({
             type: "GET",
-            url: `/api/customers/${id}`,
+            url: `/customers/${id}`,
             dataType: 'json',
             success: function (data) {
                 $("#userId").val(data.id);
@@ -106,16 +116,42 @@ $(document).ready(function () {
                 $("#email").val(data.email);
                 $("#status").val(data.status);
                 $("#role").val(data.role);
+                $("#password").val(''); 
+                $("#password_confirmation").val('');
+                $("#saveBtn").text('Update');
+                $("#userModal").modal('show');
             },
             error: function () {
-                console.log('Error loading user via AJAX.');
+                console.error('Error loading user data.');
             }
         });
     });
 
-   
-    $('#userModal').on('hidden.bs.modal', function (e) {
-        $("#form").trigger("reset");
+
+    $('#table').on('click', '.deletebtn', function () {
+        var id = $(this).data('id');
+        if (confirm('Are you sure you want to delete this user?')) {
+            $.ajax({
+                type: "DELETE",
+                url: `/customers/${id}`,
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                },
+                success: function () {
+                    table.ajax.reload();
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error deleting user:', error);
+                }
+            });
+        }
+    });
+
+    
+    $('#createUserBtn').on('click', function () {
         $("#userId").val('');
+        $("#userForm")[0].reset();
+        $("#saveBtn").text('Save');
+        $("#userModal").modal('show');
     });
 });

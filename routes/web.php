@@ -12,6 +12,7 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\AdminCheckoutController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\CustomerController;
 
 
 /*
@@ -72,6 +73,9 @@ Route::middleware(['auth'])->group(function () {
 Route::post('wishlists/importExcel', [WishlistController::class, 'importExcel'])->name('wishlists.importExcel');
 
 
+Route::resource('reviews', ReviewController::class);
+
+
 
 
 //admin
@@ -94,4 +98,9 @@ Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('/admin/checkout/{id}', [AdminCheckoutController::class, 'show'])->name('admin.checkout.show');
     Route::put('/admin/checkout/{id}', [AdminCheckoutController::class, 'updateStatus'])->name('admin.updateCheckoutStatus');
 });
-    Route::view('/admin/customer', 'customer.index');
+   // Route::view('/customers', 'customer.index');
+   Route::get('/customers', [CustomerController::class, 'index']);
+   Route::post('/customers', [CustomerController::class, 'store']);
+   Route::get('/customers/{id}', [CustomerController::class, 'show']);
+   Route::put('/customers/{id}', [CustomerController::class, 'update']);
+   Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
