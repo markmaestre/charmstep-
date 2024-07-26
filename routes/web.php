@@ -15,6 +15,8 @@ use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\AdminReviewController;
+use App\Http\Controllers\AdminWishlistController;
 
 
 /*
@@ -64,7 +66,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
     Route::get('/cart/checkout', [CartController::class, 'showCheckout'])->name('cart.checkout.form');
     Route::put('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.update');
-    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
+
     Route::view('/checkout/success', 'cart.checkout_success')->name('checkout.success');
 });
 
@@ -96,11 +98,11 @@ Route::prefix('admin')->group(function () {
 });
 
 
-Route::middleware(['auth', 'admin'])->group(function () {
+
     Route::get('/admin/checkouts', [AdminCheckoutController::class, 'index'])->name('admin.checkouts');
     Route::get('/admin/checkout/{id}', [AdminCheckoutController::class, 'show'])->name('admin.checkout.show');
     Route::put('/admin/checkout/{id}', [AdminCheckoutController::class, 'updateStatus'])->name('admin.updateCheckoutStatus');
-});
+    Route::get('/admin/products', [CartController::class, 'index'])->name('admin.carts.index');
    // Route::view('/customers', 'customer.index');
    Route::get('/customers', [CustomerController::class, 'index']);
    Route::post('/customers', [CustomerController::class, 'store']);
@@ -115,3 +117,6 @@ Route::middleware(['auth', 'admin'])->group(function () {
 
 
 Route::get('/', [HomeController::class, 'index']);
+
+Route::get('/admin/reviews', [AdminReviewController::class, 'index'])->name('admin.reviews.index');
+Route::get('/admin/wishlists', [AdminWishlistController::class, 'index'])->name('admin.wishlists.index');

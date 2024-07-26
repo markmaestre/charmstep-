@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Checkout Details</title>
+    <title>Checkout Details</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <style>
         body {
@@ -20,6 +20,22 @@
             background-color: #fff;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
         }
         h1, h2, h3 {
             color: #333;
@@ -86,6 +102,7 @@
 </head>
 <body>
     <div class="container">
+        <button class="back-button" onclick="history.back()">Back</button>
         <h1>Admin Checkout Details</h1>
         <h2>Checkout ID: {{ $checkout->checkout_id }}</h2>
         <p><strong>Date:</strong> {{ $checkout->created_at->format('Y-m-d H:i:s') }}</p>

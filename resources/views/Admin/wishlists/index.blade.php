@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Checkouts</title>
+    <title>Your Wishlist</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <style>
         body {
@@ -59,44 +59,42 @@
         table tbody tr:hover {
             background-color: #f1f1f1;
         }
-        a {
-            color: #007bff;
-            text-decoration: none;
-        }
-        a:hover {
-            text-decoration: underline;
+        img {
+            max-width: 100px; /* Adjust the size as needed */
+            height: auto;
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <button class="back-button" onclick="history.back()">Back</button>
-        <h1>All Checkouts</h1>
-        @if($checkouts->isEmpty())
-            <p>No checkouts found.</p>
+        <h1>Your Wishlist</h1>
+        @if($wishlists->isEmpty())
+            <p>No items in your wishlist.</p>
         @else
             <table>
                 <thead>
                     <tr>
-                        <th>Checkout ID</th>
-                        <th>User ID</th>
-                        <th>Cart ID</th>
-                        <th>Date</th>
-                        <th>Total Amount</th>
-                        <th>Status</th>
-                        <th>Details</th>
+                        <th>Wishlist ID</th>
+                        <th>Brand Name</th>
+                        <th>Size</th>
+                        <th>Image</th> <!-- Added Image Column -->
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($checkouts as $checkout)
+                    @foreach($wishlists as $wishlist)
                         <tr>
-                            <td>{{ $checkout->checkout_id }}</td>
-                            <td>{{ $checkout->user_id }}</td>
-                            <td>{{ $checkout->cart_id }}</td>
-                            <td>{{ $checkout->created_at->format('Y-m-d H:i:s') }}</td>
-                            <td>{{ $checkout->total_amount }}</td>
-                            <td>{{ $checkout->status }}</td>
-                            <td><a href="{{ route('admin.checkout.show', $checkout->checkout_id) }}">View Details</a></td>
+                            <td>{{ $wishlist->wishlist_id }}</td>
+                            <td>{{ $wishlist->brand_name }}</td>
+                            <td>{{ $wishlist->size }}</td>
+                            <td>
+                                @if($wishlist->image)
+                                    <img src="{{ asset('storage/' . $wishlist->image) }}">
+                                @else
+                                    No Image
+                                @endif
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>

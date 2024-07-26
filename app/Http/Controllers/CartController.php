@@ -169,4 +169,9 @@ class CartController extends Controller
             return redirect()->route('cart.view')->with('error', 'Checkout failed.');
         }
     }
+    public function index()
+    {
+        $carts = Cart::all();
+        return view('admin.carts', compact('carts'));
+    }
 }

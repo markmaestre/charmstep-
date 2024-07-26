@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>All Checkouts</title>
+    <title>All Carts</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <style>
         body {
@@ -71,32 +71,44 @@
 <body>
     <div class="container">
         <button class="back-button" onclick="history.back()">Back</button>
-        <h1>All Checkouts</h1>
-        @if($checkouts->isEmpty())
-            <p>No checkouts found.</p>
+        <h1>All Carts</h1>
+        @if($carts->isEmpty())
+            <p>No carts found.</p>
         @else
             <table>
                 <thead>
                     <tr>
-                        <th>Checkout ID</th>
-                        <th>User ID</th>
                         <th>Cart ID</th>
-                        <th>Date</th>
-                        <th>Total Amount</th>
-                        <th>Status</th>
-                        <th>Details</th>
+                        <th>User ID</th>
+                        <th>Item ID</th>
+                        <th>Brand Name</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Size</th>
+                        <th>Image</th>
+                
+                        <th>Date Added</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach($checkouts as $checkout)
+                    @foreach($carts as $cart)
                         <tr>
-                            <td>{{ $checkout->checkout_id }}</td>
-                            <td>{{ $checkout->user_id }}</td>
-                            <td>{{ $checkout->cart_id }}</td>
-                            <td>{{ $checkout->created_at->format('Y-m-d H:i:s') }}</td>
-                            <td>{{ $checkout->total_amount }}</td>
-                            <td>{{ $checkout->status }}</td>
-                            <td><a href="{{ route('admin.checkout.show', $checkout->checkout_id) }}">View Details</a></td>
+                            <td>{{ $cart->id }}</td>
+                            <td>{{ $cart->user_id }}</td>
+                            <td>{{ $cart->item_id }}</td>
+                            <td>{{ $cart->brand_name }}</td>
+                            <td>{{ $cart->price }}</td>
+                            <td>{{ $cart->quantity }}</td>
+                            <td>{{ $cart->size }}</td>
+                            <td>
+                                @if($cart->image)
+                                    <img src="{{ asset('storage/' . $cart->image) }}" alt="{{ $cart->brand_name }}" style="max-width: 100px;">
+                                @else
+                                    No Image
+                                @endif
+                            </td>
+
+                            <td>{{ $cart->created_at->format('Y-m-d H:i:s') }}</td>
                         </tr>
                     @endforeach
                 </tbody>

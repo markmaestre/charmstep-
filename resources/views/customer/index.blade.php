@@ -8,10 +8,28 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.1.3/css/bootstrap.min.css">
+    <style>
+        .back-button {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
 
 <div class="container mt-4">
+    <button class="back-button" onclick="history.back()">Back</button>
     <h1>Users</h1>
     <button class="btn btn-primary" id="createUserBtn" data-toggle="modal" data-target="#userModal">Add User</button>
     <table id="table" class="table table-striped table-bordered">
@@ -27,7 +45,6 @@
         </thead>
     </table>
 </div>
-
 
 <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="userModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -55,7 +72,7 @@
                         <select class="form-select" id="status" name="status" required>
                             <option value="">Select Status</option>
                             <option value="active">Active</option>
-                            <option value="deactive">deactive</option>
+                            <option value="deactive">Deactive</option>
                         </select>
                         <div class="invalid-feedback" id="statusError"></div>
                     </div>
