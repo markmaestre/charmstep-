@@ -13,6 +13,8 @@ use App\Http\Controllers\AdminCheckoutController;
 use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\SearchController;
 
 
 /*
@@ -34,7 +36,7 @@ Route::get('/home', function () {
     return view('home');
 });
 
-
+Route::get('/search', [SearchController::class, 'search']);
 //customer
 Route::middleware('auth')->group(function () {
     Route::view('/seller/product', 'seller.product');
@@ -109,3 +111,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
    Route::get('/dashboard', function () {
     return view('dashboard'); 
 });
+
+
+
+Route::get('/', [HomeController::class, 'index']);

@@ -65,6 +65,6 @@ Route::middleware('auth:sanctum')->group(function () {
 
 Route::middleware('auth:sanctum')->group(function () {
     //Route::apiResource('reviews', ReviewController::class);
-    Route::get('/checkouts/completed', [CheckoutController::class, 'completed']);
 
+    Route::get('/checkouts/completed', [CheckoutController::class, 'completed']);
 });

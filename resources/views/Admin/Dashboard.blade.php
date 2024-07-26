@@ -74,7 +74,7 @@
                 </a>
             </li>
             <li>
-                <a href="/admin/charts">
+                <a href="/dashboard">
                     <i class="bx bx-dollar"></i>
                     <span class="title">Sales</span>
                 </a>
