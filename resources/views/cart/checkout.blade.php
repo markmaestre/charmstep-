@@ -102,9 +102,7 @@
                 <label for="payment_method">Payment Method:</label>
                 <select id="payment_method" name="payment_method" required>
                     <option value="">Select Payment Method</option>
-                    <option value="credit_card">Credit Card</option>
-                    <option value="paypal">PayPal</option>
-                    <option value="bank_transfer">Bank Transfer</option>
+                    <option value="credit_card">COD</option>
                 </select>
             </div>
 

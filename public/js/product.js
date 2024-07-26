@@ -1,7 +1,4 @@
-
-
 $(document).ready(function () {
-  
     var table = $('#itemTable').DataTable({
         processing: true,
         serverSide: true,
@@ -41,7 +38,6 @@ $(document).ready(function () {
         ]
     });
 
-
     $('#itemModal').on('show.bs.modal', function (e) {
         $('#form').trigger('reset');
         $('#itemId').val(''); 
@@ -61,7 +57,6 @@ $(document).ready(function () {
                     $('#size').val(data.size);
                     $('#price').val(data.price);
 
-                  
                     if (data.image) {
                         $('#imagePreview').attr('src', '/storage/' + data.image);
                     } else {
@@ -74,37 +69,58 @@ $(document).ready(function () {
                 }
             });
         } else {
-          
             $('#imagePreview').attr('src', '/storage/images/no-image.jpg');
         }
     });
 
-   
-    $('#form').submit(function (e) {
-        e.preventDefault();
-        var formData = new FormData(this);
-        var id = $('#itemId').val();
-        var type = id ? 'PUT' : 'POST';
-        var url = id ? '/api/items/' + id : '/api/items';
-
-        $.ajax({
-            type: type,
-            url: url,
-            data: formData,
-            contentType: false,
-            processData: false,
-            headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
-            success: function (data) {
-                alert(data.success);
-                $('#itemModal').modal('hide');
-                table.ajax.reload(); 
+    $('#form').validate({
+        rules: {
+            product_name: "required",
+            quantity: {
+                required: true,
+                number: true
             },
-            error: function (xhr) {
-                console.log('Error saving item. Please check the console for more details.');
-                console.error(xhr.responseText);
-                alert('Error saving item: ' + xhr.responseText);
+            price: {
+                required: true,
+                number: true
             }
-        });
+        },
+        messages: {
+            product_name: "Please enter the product name",
+            quantity: {
+                required: "Please enter the quantity",
+                number: "Please enter a valid number"
+            },
+            price: {
+                required: "Please enter the price",
+                number: "Please enter a valid number"
+            }
+        },
+        submitHandler: function (form) {
+            var formData = new FormData(form);
+            var id = $('#itemId').val();
+            var type = id ? 'PUT' : 'POST';
+            var url = id ? '/api/items/' + id : '/api/items';
+
+            $.ajax({
+                type: type,
+                url: url,
+                data: formData,
+                contentType: false,
+                processData: false,
+                headers: { 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') },
+                success: function (data) {
+                    alert(data.success);
+                    $('#itemModal').modal('hide');
+                    table.ajax.reload();
+                },
+                error: function (xhr) {
+                    console.log('Error saving item. Please check the console for more details.');
+                    console.error(xhr.responseText);
+                    alert('Error saving item: ' + xhr.responseText);
+                }
+            });
+        }
     });
 
     $(document).on('click', '.deletebtn', function (e) {

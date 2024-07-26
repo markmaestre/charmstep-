@@ -23,7 +23,7 @@ class AdminLoginController extends Controller
         $credentials = $request->only('email', 'password');
 
         if (Auth::guard('admin')->attempt($credentials)) {
-            // Authentication passed...
+          
             return redirect()->intended(route('admin.dashboard'));
         }
 
@@ -36,6 +36,6 @@ class AdminLoginController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return redirect('/admin/login'); // Redirect to admin login page
+        return redirect('/admin/login'); 
     }
 }

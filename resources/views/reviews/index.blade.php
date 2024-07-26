@@ -123,7 +123,7 @@
                         $('#reviewModal').modal('hide');
                     },
                     error: function(response) {
-                        // Handle errors if needed
+                        
                     }
                 });
             });
@@ -135,7 +135,7 @@
                     $('#checkout_id').val(data.checkout_id);
                     $('#description').val(data.description);
                     $('#rating').val(data.rating);
-                    $('#photo').val(''); // Clear file input
+                    $('#photo').val(''); 
                     $('#reviewModal').modal('show');
                 });
             });

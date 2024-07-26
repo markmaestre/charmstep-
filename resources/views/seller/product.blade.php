@@ -8,6 +8,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        .error {
+            color: red; 
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-4">
@@ -29,7 +34,7 @@
         </table>
     </div>
 
-    <!-- Item Modal -->
+    
     <div class="modal fade" id="itemModal" tabindex="-1" role="dialog" aria-labelledby="itemModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -44,7 +49,7 @@
                         <input type="hidden" id="itemId" name="item_id">
                         <div class="form-group">
                             <label for="product_name">Product Name</label>
-                            <input type="text" class="form-control" id="product_name" name="product_name" required>
+                            <input type="text" class="form-control" id="product_name" name="product_name">
                         </div>
                         <div class="form-group">
                             <label for="description">Description</label>
@@ -52,7 +57,7 @@
                         </div>
                         <div class="form-group">
                             <label for="quantity">Quantity</label>
-                            <input type="number" class="form-control" id="quantity" name="quantity" required>
+                            <input type="number" class="form-control" id="quantity" name="quantity">
                         </div>
                         <div class="form-group">
                             <label for="size">Size</label>
@@ -60,7 +65,7 @@
                         </div>
                         <div class="form-group">
                             <label for="price">Price</label>
-                            <input type="number" class="form-control" id="price" name="price" step="0.01" required>
+                            <input type="number" class="form-control" id="price" name="price" step="0.01">
                         </div>
                         <div class="form-group">
                             <label for="image">Image</label>
@@ -74,12 +79,10 @@
         </div>
     </div>
 
-   
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.10.25/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
     <script src="{{ asset('js/product.js') }}"></script>
-</body>
-</html>

@@ -13,6 +13,7 @@ use App\Http\Controllers\SellerController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReviewController;
+use App\Http\Controllers\ChartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -29,6 +30,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('/dashboard/users-chart', [ChartController::class, 'usersChart']);
+Route::get('/dashboard/items-quantity-chart', [ChartController::class, 'itemsQuantityChart']);
+Route::get('/dashboard/sales-chart', [ChartController::class, 'salesChart']);
 
 //Route::apiResource('customers', CustomerController::class);
 Route::apiResource('items', ItemController::class);

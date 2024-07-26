@@ -56,20 +56,50 @@ class CartController extends Controller
             ]);
         }
 
-        // Decrement the item quantity in inventory
         $item->quantity -= $validatedData['quantity'];
         $item->save();
 
         return response()->json(['success' => 'Item added to cart successfully.']);
     }
 
-    public function delete($id)
+    public function updateQuantity(Request $request, $id)
     {
+        $validatedData = $request->validate([
+            'quantity' => 'required|integer|min:1',
+        ]);
+
         $cartItem = Cart::findOrFail($id);
         
         if ($cartItem->user_id !== auth()->user()->id) {
             return redirect()->route('cart.view')->with('error', 'Unauthorized action.');
         }
+
+        $item = Item::where('item_id', $cartItem->item_id)->first();
+
+        if ($item->quantity + $cartItem->quantity < $validatedData['quantity']) {
+            return redirect()->route('cart.view')->with('error', 'Not enough items in stock.');
+        }
+
+        $item->quantity += $cartItem->quantity - $validatedData['quantity'];
+        $item->save();
+
+        $cartItem->quantity = $validatedData['quantity'];
+        $cartItem->save();
+
+        return redirect()->route('cart.view')->with('success', 'Quantity updated successfully.');
+    }
+
+    public function delete($id)
+    {
+        $cartItem = Cart::findOrFail($id);
+
+        if ($cartItem->user_id !== auth()->user()->id) {
+            return redirect()->route('cart.view')->with('error', 'Unauthorized action.');
+        }
+
+        $item = Item::where('item_id', $cartItem->item_id)->first();
+        $item->quantity += $cartItem->quantity;
+        $item->save();
 
         $cartItem->delete();
 
@@ -82,6 +112,14 @@ class CartController extends Controller
 
         if (!auth()->check()) {
             return redirect()->route('cart.view')->with('error', 'User not authenticated.');
+        }
+
+        $cartItems = Cart::where('user_id', $userId)->where('status', 'pending')->get();
+
+        foreach ($cartItems as $cartItem) {
+            $item = Item::where('item_id', $cartItem->item_id)->first();
+            $item->quantity += $cartItem->quantity;
+            $item->save();
         }
 
         Cart::where('user_id', $userId)->where('status', 'pending')->delete();
@@ -115,7 +153,7 @@ class CartController extends Controller
 
         $checkout = Checkout::create([
             'user_id' => $userId,
-            'cart_id' => $cartItems->first()->id, // Use the cart_id of the first item
+            'cart_id' => $cartItems->first()->id, 
             'address' => $validatedData['address'],
             'phone_number' => $validatedData['phone_number'],
             'payment_method' => $validatedData['payment_method'],

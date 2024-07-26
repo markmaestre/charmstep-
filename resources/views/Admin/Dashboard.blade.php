@@ -6,9 +6,9 @@
     <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
     <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet"/>
     <style>
-        /* Your existing styles */
+
         .sidebar {
-            /* Style your sidebar */
+           
         }
         .user-section {
             text-align: center;
@@ -55,7 +55,7 @@
                 <span class="tooltip">Search</span>
             </li>
             <li>
-                <a href="/admin/customer">
+                <a href="/customers">
                     <i class="bx bx-user"></i>
                     <span class="title">User</span>
                 </a>

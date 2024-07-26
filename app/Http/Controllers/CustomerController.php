@@ -64,7 +64,7 @@ class CustomerController extends Controller
         if ($request->has('password') && !empty($request->input('password'))) {
             $validated['password'] = Hash::make($validated['password']);
         } else {
-            unset($validated['password']); // Remove password if not provided
+            unset($validated['password']); 
         }
 
         $user->update($validated);

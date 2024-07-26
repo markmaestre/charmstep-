@@ -78,7 +78,7 @@ $(document).ready(function() {
                 data: formData,
                 success: function(response) {
                     alert(response.message);
-                    window.location.href = response.redirect_url; // Redirect to login page
+                    window.location.href = response.redirect_url; 
                 },
                 error: function(response) {
                     $('.error').remove();

@@ -61,6 +61,7 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
     Route::get('/cart/checkout', [CartController::class, 'showCheckout'])->name('cart.checkout.form');
+    Route::put('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.update');
     Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
     Route::view('/checkout/success', 'cart.checkout_success')->name('checkout.success');
 });
@@ -104,3 +105,7 @@ Route::middleware(['auth', 'admin'])->group(function () {
    Route::get('/customers/{id}', [CustomerController::class, 'show']);
    Route::put('/customers/{id}', [CustomerController::class, 'update']);
    Route::delete('/customers/{id}', [CustomerController::class, 'destroy']);
+
+   Route::get('/dashboard', function () {
+    return view('dashboard'); 
+});

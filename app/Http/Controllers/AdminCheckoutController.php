@@ -1,7 +1,7 @@
 <?php
 
 
-// app/Http/Controllers/AdminCheckoutController.php
+
 
 namespace App\Http\Controllers;
 

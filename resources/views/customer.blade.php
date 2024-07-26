@@ -25,13 +25,12 @@
                     </tr>
                 </thead>
                 <tbody id="customersBody">
-                    <!-- Data will be loaded here via AJAX -->
                 </tbody>
             </table>
         </div>
     </div>
 
-    <!-- Customer Modal -->
+   
     <div id="customerModal" class="modal fade" tabindex="-1" aria-labelledby="customerModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">

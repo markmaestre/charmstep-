@@ -109,66 +109,65 @@
         }
 
         .update-quantity-container input {
-            width: 40px;
-            margin-right: 10px;
-            padding: 8px;
-            border: 1px solid #ced4da;
-            border-radius: 4px;
-            text-align: center;
-            font-size: 14px;
-        }
+            width:40px;
+margin-right: 10px;
+padding: 8px;
+border: 1px solid #ced4da;
+border-radius: 4px;
+text-align: center;
+font-size: 14px;
+}
+.update-quantity-container button {
+        background-color: #28a745;
+        color: #fff;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        font-size: 14px;
+    }
 
-        .update-quantity-container button {
-            background-color: #28a745;
-            color: #fff;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-size: 14px;
-        }
+    .update-quantity-container button:hover {
+        background-color: #218838;
+    }
 
-        .update-quantity-container button:hover {
-            background-color: #218838;
-        }
+    .action-buttons {
+        margin-top: 20px;
+        text-align: center;
+    }
 
-        .action-buttons {
-            margin-top: 20px;
-            text-align: center;
-        }
+    .action-buttons .btn {
+        background-color: #28a745;
+        color: #fff;
+        margin: 0 5px;
+    }
 
-        .action-buttons .btn {
-            background-color: #28a745;
-            color: #fff;
-            margin: 0 5px;
-        }
+    .action-buttons .btn:hover {
+        background-color: #218838;
+    }
 
-        .action-buttons .btn:hover {
-            background-color: #218838;
-        }
+    .action-buttons form {
+        display: inline;
+    }
 
-        .action-buttons form {
-            display: inline;
-        }
+    .action-buttons p {
+        font-size: 16px;
+        font-weight: bold;
+        margin: 10px 0;
+    }
 
-        .action-buttons p {
-            font-size: 16px;
-            font-weight: bold;
-            margin: 10px 0;
-        }
+    .table-bottom td {
+        font-weight: bold;
+        background-color: #f8f9fa;
+        font-size: 16px;
+    }
 
-        .table-bottom td {
-            font-weight: bold;
-            background-color: #f8f9fa;
-            font-size: 16px;
-        }
-
-        .payment-status {
-            font-weight: bold;
-            color: green;
-        }
-    </style>
+    .payment-status {
+        font-weight: bold;
+        color: green;
+    }
+</style>
 </head>
 <body>
     <div class="box-container">
@@ -177,56 +176,63 @@
             <a href="{{ url('/shop') }}" class="btn">Shop</a>
         </div>
         <h1 class="heading">Your Cart</h1>
-
         @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
+        <div class="alert alert-success">
+            {{ session('success') }}
+        </div>
+    @endif
 
-        @if (session('error'))
-            <div class="alert alert-danger">
-                {{ session('error') }}
-            </div>
-        @endif
+    @if (session('error'))
+        <div class="alert alert-danger">
+            {{ session('error') }}
+        </div>
+    @endif
 
-        @php $grandTotal = 0; @endphp
+    @php $grandTotal = 0; @endphp
 
-        @if ($cartItems->count() > 0)
-            @foreach ($cartItems as $item)
-                @if ($item->status === 'pending')
-                    @php $grandTotal += $item->price * $item->quantity; @endphp
-                    <div class="cart-item">
-                        <img src="/storage/{{ $item->image }}" alt="{{ $item->product_name }}">
-                        <div class="details">
-                            <h4>{{ $item->product_name }}</h4>
-                            <p>Price: ${{ $item->price }}</p>
-                            <p>Quantity: {{ $item->quantity }}</p>
-                            <p>Size: {{ $item->size }}</p>
-                        </div>
-                        <div class="actions">
-                            <form action="{{ route('cart.delete', $item->id) }}" method="POST">
+    @if ($cartItems->count() > 0)
+        @foreach ($cartItems as $item)
+            @if ($item->status === 'pending')
+                @php $grandTotal += $item->price * $item->quantity; @endphp
+                <div class="cart-item">
+                    <img src="/storage/{{ $item->image }}" alt="{{ $item->product_name }}">
+                    <div class="details">
+                        <h4>{{ $item->product_name }}</h4>
+                        <p>Price: ${{ $item->price }}</p>
+                        <p>Quantity: {{ $item->quantity }}</p>
+                        <p>Size: {{ $item->size }}</p>
+                    </div>
+                    <div class="actions">
+                        <form action="{{ route('cart.delete', $item->id) }}" method="POST">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn">Delete</button>
+                        </form>
+                        <div class="update-quantity-container">
+                            <form action="{{ route('cart.update', $item->id) }}" method="POST">
                                 @csrf
-                                @method('DELETE')
-                                <button type="submit" class="btn">Delete</button>
+                                @method('PUT')
+                                <input type="number" name="quantity" value="{{ $item->quantity }}" min="1">
+                                <button type="submit">Update</button>
                             </form>
                         </div>
                     </div>
-                @endif
-            @endforeach
+                </div>
+            @endif
+        @endforeach
 
-            <div class="action-buttons">
-                <form action="{{ route('cart.deleteAll') }}" method="POST">
-                    @csrf
-                    @method('DELETE')
-                    <button type="submit" class="btn">Delete All Items</button>
-                </form>
-                <p><strong>Grand Total: ${{ $grandTotal }}</strong></p>
-                <a href="{{ route('cart.checkout.form') }}" class="btn">Proceed to Checkout</a>
-            </div>
-        @else
-            <p>Your cart is empty.</p>
-        @endif
-    </div>
+        <div class="action-buttons">
+            <form action="{{ route('cart.deleteAll') }}" method="POST">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn">Delete All Items</button>
+            </form>
+            <p><strong>Grand Total: ${{ $grandTotal }}</strong></p>
+            <a href="{{ route('cart.checkout.form') }}" class="btn">Proceed to Checkout</a>
+        </div>
+    @else
+        <p>Your cart is empty.</p>
+    @endif
+</div>
 </body>
 </html>
