@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Your Wishlist</title>
+    <title>Wishlist</title>
     <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <style>
         body {
@@ -59,8 +59,8 @@
         table tbody tr:hover {
             background-color: #f1f1f1;
         }
-        img {
-            max-width: 100px; /* Adjust the size as needed */
+        .table img {
+            max-width: 100px;
             height: auto;
             border-radius: 4px;
         }
@@ -69,32 +69,36 @@
 <body>
     <div class="container">
         <button class="back-button" onclick="history.back()">Back</button>
-        <h1>Your Wishlist</h1>
+        <h1>Wishlist</h1>
         @if($wishlists->isEmpty())
-            <p>No items in your wishlist.</p>
+            <p>No items in wishlist.</p>
         @else
             <table>
                 <thead>
                     <tr>
                         <th>Wishlist ID</th>
+                        <th>User ID</th>
                         <th>Brand Name</th>
                         <th>Size</th>
-                        <th>Image</th> <!-- Added Image Column -->
+                        <th>Image</th>
+                        <th>Added On</th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach($wishlists as $wishlist)
                         <tr>
                             <td>{{ $wishlist->wishlist_id }}</td>
+                            <td>{{ $wishlist->user_id }}</td>
                             <td>{{ $wishlist->brand_name }}</td>
                             <td>{{ $wishlist->size }}</td>
                             <td>
                                 @if($wishlist->image)
-                                    <img src="{{ asset('storage/' . $wishlist->image) }}">
+                                    <img src="{{ asset('storage/' . $wishlist->image) }}" alt="{{ $wishlist->brand_name }}">
                                 @else
                                     No Image
                                 @endif
                             </td>
+                            <td>{{ $wishlist->created_at->format('Y-m-d H:i:s') }}</td>
                         </tr>
                     @endforeach
                 </tbody>

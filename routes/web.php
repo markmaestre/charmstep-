@@ -34,9 +34,7 @@ Route::get('/register', function () {
     return view('register');
 });
 Route::view('/login', 'auth.login');
-Route::get('/home', function () {
-    return view('home');
-});
+Route::get('/home', [HomeController::class, 'index']);
 
 Route::get('/search', [SearchController::class, 'search']);
 //customer
