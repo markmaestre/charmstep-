@@ -174,7 +174,7 @@
             <ul class="navbar-list">
                 <li><a href="#home" class="navbar-link" data-nav-link>Home</a></li>
                 <li><a href="#new-items" class="navbar-link" data-nav-link>New Items</a></li>
-                <li><a href="#old-items" class="navbar-link" data-nav-link>Old Items</a></li>
+                <li><a href="#old-items" class="navbar-link" data-nav-link>All Items</a></li>
                 <li><a href="about_us.php" class="navbar-link" data-nav-link>About us</a></li>
                 <li><a href="#More" class="navbar-link" data-nav-link>More</a></li>
             </ul>
@@ -235,7 +235,7 @@
 
         <section class="section old-items" id="old-items">
             <div class="container">
-                <h2 class="h2 section-title" style="color:red">Old Items</h2>
+                <h2 class="h2 section-title" style="color:red">All Items</h2>
                 <div class="items-container" id="old-items-container">
                     @foreach ($oldItems as $item)
                         <div class="item-card">

@@ -6,6 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>User Registration</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"> <!-- Font Awesome for the icon -->
     <style>
         * {
             margin: 0;
@@ -30,6 +31,15 @@
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
             backdrop-filter: blur(10px);
             text-align: center;
+            position: relative; 
+        }
+        .home-icon {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            font-size: 24px;
+            color: #333;
+            text-decoration: none; 
         }
         h2 {
             color: #333;
@@ -133,6 +143,7 @@
 </head>
 <body>
     <div class="container">
+        <a href="/home" class="home-icon"><i class="fas fa-home"></i></a> <!-- Home icon -->
         <h2>User Registration</h2>
         <form id="register-form" class="registration-form">
             @csrf

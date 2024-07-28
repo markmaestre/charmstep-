@@ -31,7 +31,9 @@ class ReviewController extends Controller
                 ->make(true);
         }
 
-        $checkouts = Checkout::where('user_id', auth()->id())->get();
+        $checkouts = Checkout::where('user_id', auth()->id())
+            ->where('status', 'completed')
+            ->get();
         return view('reviews.index', compact('checkouts'));
     }
 

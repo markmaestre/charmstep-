@@ -115,6 +115,18 @@
             text-align: left;
             width: 100%;
         }
+        .homepage-link {
+            margin-top: 15px;
+            color: #868686;
+            display: block;
+        }
+        .homepage-link a {
+            color: #339933;
+            text-decoration: none;
+        }
+        .homepage-link a:hover {
+            text-decoration: underline;
+        }
     </style>
 </head>
 <body>
@@ -140,6 +152,10 @@
 
             <button type="submit">Login</button>
         </form>
+        
+        <div class="homepage-link">
+            <a href="/home">Go to Homepage</a>
+        </div>
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>

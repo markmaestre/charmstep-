@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -15,13 +16,22 @@
             background: linear-gradient(to right bottom, #ffad42, #903bff);
             overflow: hidden;
         }
+        .home-icon {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: #fff;
+            cursor: pointer;
+            z-index: 100;
+        }
         .login-field {
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        .login-  {
+        .login-background {
             background: #fff;
             min-height: 600px;
             min-width: 400px;
@@ -215,10 +225,15 @@
                     e.preventDefault();
                 }
             });
+
+            $('.home-icon').click(function() {
+                window.location.href = '/home';
+            });
         });
     </script>
 </head>
 <body>
+    <i class="fas fa-home home-icon"></i>
     <div class="login-field">
         <div class="login-background">
             <div class="login-title">
