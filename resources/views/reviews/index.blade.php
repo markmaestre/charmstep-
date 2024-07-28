@@ -5,9 +5,31 @@
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap4.min.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <style>
+        .btn-back {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
+        .error {
+            color: red;
+        }
+    </style>
 </head>
 <body>
     <div class="container mt-5">
+        <button class="btn-back" onclick="window.history.back()">Back</button>
         <h2 class="mb-4">Reviews</h2>
         <button class="btn btn-primary mb-3" id="addReviewBtn" data-toggle="modal" data-target="#reviewModal">Add Review</button>
         <table class="table table-bordered" id="reviewsTable">
@@ -74,6 +96,8 @@
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/jquery.validate.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/jquery.validation/1.16.0/additional-methods.min.js"></script>
     <script>
         $(document).ready(function() {
             var table = $('#reviewsTable').DataTable({
@@ -103,29 +127,94 @@
                 $('#photoError').text('');
             });
 
-            $('#saveBtn').click(function() {
-                var formData = new FormData($('#reviewForm')[0]);
-                var reviewId = $('#reviewId').val();
-                var url = reviewId ? "{{ url('reviews') }}/" + reviewId : "{{ url('reviews') }}";
-                var method = reviewId ? 'PUT' : 'POST';
-
-                $.ajax({
-                    url: url,
-                    method: method,
-                    data: formData,
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            $('#reviewForm').validate({
+                rules: {
+                    checkout_id: {
+                        required: true
                     },
-                    contentType: false,
-                    processData: false,
-                    success: function(response) {
-                        table.ajax.reload();
-                        $('#reviewModal').modal('hide');
+                    description: {
+                        required: true
                     },
-                    error: function(response) {
-                        
+                    rating: {
+                        required: true,
+                        min: 1,
+                        max: 5
+                    },
+                    photo: {
+                        extension: "jpg|jpeg|png|gif"
                     }
-                });
+                },
+                messages: {
+                    checkout_id: {
+                        required: "Please select a checkout."
+                    },
+                    description: {
+                        required: "Please enter a description."
+                    },
+                    rating: {
+                        required: "Please enter a rating.",
+                        min: "Rating must be at least 1.",
+                        max: "Rating must be no more than 5."
+                    },
+                    photo: {
+                        extension: "Please upload a valid image file (jpg, jpeg, png, gif)."
+                    }
+                },
+                errorElement: 'div',
+                errorPlacement: function(error, element) {
+                    var name = element.attr('name');
+                    error.appendTo($('#' + name + 'Error'));
+                    element.addClass('is-invalid');
+                },
+                success: function(label, element) {
+                    $(element).removeClass('is-invalid');
+                    label.remove();
+                }
+            });
+
+            $('#saveBtn').click(function() {
+                if ($('#reviewForm').valid()) {
+                    var formData = new FormData($('#reviewForm')[0]);
+                    var reviewId = $('#reviewId').val();
+                    var url = reviewId ? "{{ url('reviews') }}/" + reviewId : "{{ url('reviews') }}";
+                    var method = reviewId ? 'PUT' : 'POST';
+
+                    $.ajax({
+                        url: url,
+                        method: method,
+                        data: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        },
+                        contentType: false,
+                        processData: false,
+                        success: function(response) {
+                            table.ajax.reload();
+                            $('#reviewModal').modal('hide');
+                        },
+                        error: function(response) {
+                            var errors = response.responseJSON.errors;
+                            if (errors) {
+                                if (errors.checkout_id) {
+                                    $('#checkout_id').addClass('is-invalid');
+                                    $('#checkoutIdError').text(errors.checkout_id[0]);
+                                }
+                                if (errors.description) {
+                                    $('#description').addClass('is-invalid');
+                                    $('#descriptionError').text(errors.description[0]);
+                                }
+                                if (errors.rating) {
+                                    $('#rating').addClass('is-invalid');
+                                    $('#ratingError').text(errors.rating[0]);
+                                }
+                                if (errors.photo) {
+                                    $('#photo').addClass('is-invalid');
+                                    $('#photoError').text(errors.photo[0]);
+                                }
+                            }
+                        }
+                    });
+                }
             });
 
             $(document).on('click', '.editbtn', function() {

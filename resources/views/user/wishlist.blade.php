@@ -13,11 +13,28 @@
             display: block;
             margin: 0 auto 20px;
         }
+        .btn-back {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 
 <div class="container mt-5">
+    <button class="btn-back" onclick="window.history.back()">Back</button>
     <h2 class="text-center mb-4">Wishlist</h2>
     <button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#wishlistModal">Add Wishlist Item</button>
     <button type="button" class="btn btn-primary mb-4" data-toggle="modal" data-target="#importModal">Import Wishlist Items</button>

@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Imports;
 
 use App\Models\User;
@@ -11,11 +12,11 @@ class UsersImport implements ToModel, WithHeadingRow
     public function model(array $row)
     {
         return new User([
-            'name' => $row['name'],
-            'email' => $row['email'],
-            'password' => Hash::make($row['password']),
-            'status' => $row['status'] ?? 'active',
-            'role' => $row['role'] ?? 'user',
+            'name'   => $row['name'],
+            'email'  => $row['email'],
+            'status' => $row['status'],
+            'role'   => $row['role'],
+            'password' => bcrypt('default_password'), // Default password
         ]);
     }
 }

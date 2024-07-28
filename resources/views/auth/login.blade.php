@@ -21,7 +21,7 @@
             align-items: center;
             justify-content: center;
         }
-        .login-background {
+        .login-  {
             background: #fff;
             min-height: 600px;
             min-width: 400px;

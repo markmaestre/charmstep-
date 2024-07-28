@@ -35,9 +35,10 @@ Route::get('/register', function () {
 });
 Route::view('/login', 'auth.login');
 Route::get('/home', [HomeController::class, 'index']);
-
 Route::get('/search', [SearchController::class, 'search']);
 //customer
+
+
 Route::middleware('auth')->group(function () {
     Route::view('/seller/product', 'seller.product');
     Route::get('/seller/dashboard', [SellerController::class, 'dashboard'])->name('seller.dashboard');
@@ -45,6 +46,9 @@ Route::middleware('auth')->group(function () {
     
     Route::get('/shop', [ShopController::class, 'index']);
     Route::get('/user/dashboard', [UserController::class, 'dashboard'])->name('user.dashboard');
+    Route::get('/profile/edit', [UserController::class, 'editProfile'])->name('profile.edit')->middleware('auth');
+    Route::put('/profile/edit', [UserController::class, 'updateProfile'])->name('profile.update')->middleware('auth');
+    Route::delete('/profile/delete', [UserController::class, 'deleteProfile'])->name('profile.delete')->middleware('auth');
 });
 
 Route::middleware(['auth'])->group(function () {
@@ -64,7 +68,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/cart', [CartController::class, 'view'])->name('cart.view');
     Route::get('/cart/checkout', [CartController::class, 'showCheckout'])->name('cart.checkout.form');
     Route::put('/cart/update/{id}', [CartController::class, 'updateQuantity'])->name('cart.update');
-
+    Route::post('/cart/checkout', [CartController::class, 'checkout'])->name('cart.checkout');
     Route::view('/checkout/success', 'cart.checkout_success')->name('checkout.success');
 });
 

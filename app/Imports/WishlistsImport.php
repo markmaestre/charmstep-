@@ -18,4 +18,3 @@ class WishlistsImport implements ToModel, WithHeadingRow
         ]);
     }
 }
-    

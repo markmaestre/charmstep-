@@ -143,7 +143,7 @@
         </div>
         <ul class="menu-links">
             <li>
-                <a href="profile">
+                <a href="/profile/edit">
                     <i class='bx bx-edit icon'></i>
                     <span>Edit Profile</span>
                 </a>

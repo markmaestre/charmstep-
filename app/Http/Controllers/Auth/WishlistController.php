@@ -14,12 +14,8 @@ class WishlistController extends Controller
 {
     public function index()
     {
-        
         $user = auth()->user();
-
-
         $wishlists = Wishlist::where('user_id', $user->id)->get();
-
         return response()->json($wishlists);
     }
 
@@ -49,14 +45,8 @@ class WishlistController extends Controller
 
     public function update(Request $request, $id)
     {
-        $request->validate([
-            'brand_name' => 'required|string|max:255',
-            'size' => 'required|string|max:255',
-            'image' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
-        ]);
-
         $wishlist = Wishlist::where('wishlist_id', $id)->where('user_id', auth()->id())->first();
-
+        
         $wishlist->brand_name = $request->brand_name;
         $wishlist->size = $request->size;
 
@@ -85,19 +75,25 @@ class WishlistController extends Controller
             "status" => 200
         ]);
     }
+
     public function importExcel(Request $request)
     {
         $request->validate([
             'file' => 'required|mimes:xlsx,csv'
         ]);
 
+        if (!$request->hasFile('file')) {
+            Log::error('File not uploaded');
+            return response()->json(['error' => 'File not uploaded'], 422);
+        }
+
         try {
+            Log::info('Uploaded file details: ' . $request->file('file')->getClientOriginalName());
             Excel::import(new WishlistsImport, $request->file('file'));
             return response()->json(['success' => 'Excel file imported successfully.', 'status' => 200]);
         } catch (\Exception $e) {
-            Log::error('Error importing Excel file: '.$e->getMessage());
-            return response()->json(['error' => 'Error importing Excel file.'], 500);
+            Log::error('Error importing Excel file: ' . $e->getMessage());
+            return response()->json(['error' => 'Error importing Excel file: ' . $e->getMessage()], 500);
         }
     }
-
 }

@@ -12,43 +12,54 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <style>
         body {
-            margin: 0;
-            padding: 0;
-            background-image: url('images/courierr.jpeg');
-            background-size: cover;
-            background-attachment: fixed;
-            background-position: center;
-            font-family: 'Nunito', sans-serif;
-            color: #333;
-        }
+    margin: 0;
+    padding: 0;
+    background-image: url('images/shoe.png');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+    font-family: 'Nunito', sans-serif;
+    color: #333;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
         
-        .search-container {
+.search-container {
             text-align: center;
             margin: 20px auto;
             position: relative;
             width: 100%;
             max-width: 400px;
         }
-       
+
         #search {
-            padding: 12px;
+            padding: 12px 20px;
             width: 100%;
             border: 2px solid #ccc;
             border-radius: 50px;
             font-size: 16px;
             transition: border 0.3s, box-shadow 0.3s;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            background: #f9f9f9;
+            color: #333;
         }
+
         #search:focus {
             border-color: #007BFF;
             outline: none;
             box-shadow: 0 0 8px rgba(0, 123, 255, 0.3);
+            background: #fff;
         }
-        
+
+        #search::placeholder {
+            color: #999;
+        }
+
         #search-results {
             list-style-type: none;
             padding: 0;
-            margin: 0;
+            margin: 5px 0 0 0;
             max-height: 200px;
             overflow-y: auto;
             border: 1px solid #ccc;
@@ -57,21 +68,36 @@
             z-index: 1000;
             width: 100%;
             left: 0;
-            border-radius: 4px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             display: none;
         }
+
         #search-results li {
-            padding: 10px;
+            padding: 12px 20px;
             border-bottom: 1px solid #eee;
             cursor: pointer;
             transition: background 0.2s;
         }
+
         #search-results li:hover {
             background-color: #f0f0f0;
         }
+
         #search-results li:last-child {
             border-bottom: none;
+        }
+
+        #search-results li a {
+            text-decoration: none;
+            color: #333;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        #search-results li a:hover {
+            color: #007BFF;
         }
         .items-container {
             display: flex;
@@ -369,3 +395,4 @@ $(document).ready(function() {
 </script>
 </body>
 </html>
+    

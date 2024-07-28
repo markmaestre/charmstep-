@@ -31,6 +31,8 @@
             font-size: 28px;
             text-align: center;
             text-transform: uppercase;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
         }
 
         .btn-container {
@@ -78,10 +80,23 @@
         .cart-item img {
             height: 80px;
             margin-right: 20px;
+            border-radius: 8px;
         }
 
         .details {
             flex: 1;
+        }
+
+        .details h4 {
+            font-size: 20px;
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .details p {
+            font-size: 16px;
+            color: #555;
+            margin: 2px 0;
         }
 
         .actions {
@@ -97,6 +112,8 @@
             cursor: pointer;
             transition: background-color 0.3s;
             text-decoration: none;
+            margin: 2px 0;
+            display: block;
         }
 
         .btn:hover {
@@ -106,68 +123,95 @@
         .update-quantity-container {
             display: flex;
             align-items: center;
+            margin-top: 10px;
         }
 
         .update-quantity-container input {
-            width:40px;
-margin-right: 10px;
-padding: 8px;
-border: 1px solid #ced4da;
-border-radius: 4px;
-text-align: center;
-font-size: 14px;
-}
-.update-quantity-container button {
-        background-color: #28a745;
-        color: #fff;
-        border: none;
-        padding: 8px 12px;
-        border-radius: 4px;
-        cursor: pointer;
-        transition: background-color 0.3s;
-        font-size: 14px;
-    }
+            width: 50px;
+            margin-right: 10px;
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 14px;
+        }
 
-    .update-quantity-container button:hover {
-        background-color: #218838;
-    }
+        .update-quantity-container button {
+            background-color: #28a745;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 14px;
+        }
 
-    .action-buttons {
-        margin-top: 20px;
-        text-align: center;
-    }
+        .update-quantity-container button:hover {
+            background-color: #218838;
+        }
 
-    .action-buttons .btn {
-        background-color: #28a745;
-        color: #fff;
-        margin: 0 5px;
-    }
+        .action-buttons {
+            margin-top: 20px;
+            text-align: center;
+        }
 
-    .action-buttons .btn:hover {
-        background-color: #218838;
-    }
+        .action-buttons .btn {
+            background-color: #28a745;
+            color: #fff;
+            margin: 0 5px;
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+        }
 
-    .action-buttons form {
-        display: inline;
-    }
+        .action-buttons .btn:hover {
+            background-color: #218838;
+        }
 
-    .action-buttons p {
-        font-size: 16px;
-        font-weight: bold;
-        margin: 10px 0;
-    }
+        .action-buttons form {
+            display: inline;
+        }
 
-    .table-bottom td {
-        font-weight: bold;
-        background-color: #f8f9fa;
-        font-size: 16px;
-    }
+        .action-buttons p {
+            font-size: 18px;
+            font-weight: bold;
+            margin: 10px 0;
+            color: #333;
+        }
 
-    .payment-status {
-        font-weight: bold;
-        color: green;
-    }
-</style>
+        .table-bottom td {
+            font-weight: bold;
+            background-color: #f8f9fa;
+            font-size: 16px;
+        }
+
+        .payment-status {
+            font-weight: bold;
+            color: green;
+        }
+
+        @media (max-width: 768px) {
+            .cart-item {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .details {
+                margin: 10px 0;
+            }
+
+            .actions {
+                margin-left: 0;
+            }
+
+            .btn-container {
+                position: static;
+                text-align: center;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
 </head>
 <body>
     <div class="box-container">
@@ -198,7 +242,7 @@ font-size: 14px;
                     <img src="/storage/{{ $item->image }}" alt="{{ $item->product_name }}">
                     <div class="details">
                         <h4>{{ $item->product_name }}</h4>
-                        <p>Price: ${{ $item->price }}</p>
+                        <p>Price: ₱{{ $item->price }}</p>
                         <p>Quantity: {{ $item->quantity }}</p>
                         <p>Size: {{ $item->size }}</p>
                     </div>
@@ -227,7 +271,7 @@ font-size: 14px;
                 @method('DELETE')
                 <button type="submit" class="btn">Delete All Items</button>
             </form>
-            <p><strong>Grand Total: ${{ $grandTotal }}</strong></p>
+            <p><strong>Grand Total: ₱{{ $grandTotal }}</strong></p>
             <a href="{{ route('cart.checkout.form') }}" class="btn">Proceed to Checkout</a>
         </div>
     @else

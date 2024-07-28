@@ -14,7 +14,7 @@
         body {
             margin: 0;
             padding: 0;
-            background-image: url('images/courierr.jpeg');
+            background-image: url('images/shoe.jpeg');
             background-size: cover;
             background-attachment: fixed;
             background-position: center;
@@ -223,7 +223,7 @@
                             <div class="card-content">
                                 <h3 class="h3 card-title">{{ $item->product_name }}</h3>
                                 <p class="card-text">{{ $item->description }}</p>
-                                <p class="card-price">${{ number_format($item->price, 2) }}</p>
+                                <p class="card-price">₱{{ number_format($item->price, 2) }}</p>
                             </div>
                         </div>
                     @endforeach
@@ -245,7 +245,7 @@
                             <div class="card-content">
                                 <h3 class="h3 card-title">{{ $item->product_name }}</h3>
                                 <p class="card-text">{{ $item->description }}</p>
-                                <p class="card-price">${{ number_format($item->price, 2) }}</p>
+                                <p class="card-price">₱{{ number_format($item->price, 2) }}</p>
                             </div>
                         </div>
                     @endforeach

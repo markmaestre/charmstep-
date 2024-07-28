@@ -27,6 +27,7 @@
         }
         h1 {
             font-size: 28px;
+            text-align: center;
         }
         h2 {
             font-size: 24px;
@@ -65,10 +66,26 @@
         .table td {
             vertical-align: middle;
         }
+        .btn-back {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .btn-back:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
     <div class="container">
+        <a class="btn-back" href="javascript:history.back()">Back</a>
         <h1>Checkout Details</h1>
         <h2>Checkout ID: {{ $checkout->checkout_id }}</h2>
         <p><strong>Date:</strong> {{ $checkout->created_at->format('Y-m-d H:i:s') }}</p>

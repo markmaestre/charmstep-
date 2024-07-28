@@ -156,7 +156,7 @@
                     <input type="text" id="searchInput" oninput="filterMenu()" placeholder="Search...">
                 </li>
                 <li class="nav-link">
-                    <a href="profile">
+                    <a href="/profile/edit">
                         <i class='bx bx-edit icon'></i>
                         <span>Edit Profile</span>
                     </a>

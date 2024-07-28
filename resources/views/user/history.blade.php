@@ -23,8 +23,25 @@
         }
         h1 {
             margin-bottom: 20px;
-            font-size: 24px;
+            font-size: 28px;
             color: #333;
+            text-align: center;
+        }
+        .btn-back {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            text-decoration: none;
+            text-align: center;
+            margin-bottom: 20px;
+            cursor: pointer;
+        }
+        .btn-back:hover {
+            background-color: #0056b3;
         }
         .table {
             width: 100%;
@@ -53,11 +70,28 @@
         p {
             font-size: 16px;
             color: #555;
+            text-align: center;
+        }
+        .alert {
+            text-align: center;
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+        .alert.alert-success {
+            color: #28a745;
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+        }
+        .alert.alert-danger {
+            color: #dc3545;
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
         }
     </style>
 </head>
 <body>
     <div class="container">
+        <button class="btn-back" onclick="window.history.back()">Back</button>
         <h1>Checkout History</h1>
         @if($checkoutHistory->isEmpty())
             <p>You have no past checkouts.</p>
